@@ -1,0 +1,37 @@
+// Generator: bagian yang membuatkan kode TypeScript otomatis dari rancangan tabel kita
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Datasource: memberi tahu Prisma database mana yang dipakai
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")   // ambil alamat dari file .env
+}
+
+// "model" = satu tabel di database
+model Category {
+  id        Int       @id @default(autoincrement())  // kunci utama, nomor naik otomatis 1,2,3...
+  name      String    @unique                        // nama kategori, tidak boleh kembar
+  products  Product[]                                // satu kategori punya banyak produk (hanya relasi di kode, bukan kolom)
+  createdAt DateTime  @default(now())                // waktu dibuat, diisi otomatis
+
+  @@map("categories")   // nama tabel asli di MySQL
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String                     // nama produk
+  description String?  @db.Text          // "?" artinya boleh kosong; @db.Text = teks panjang
+  price       Int                        // harga dalam rupiah, pakai bilangan bulat (bukan desimal) agar tidak ada pembulatan aneh
+  stock       Int      @default(0)       // jumlah stok, awalnya 0
+  imageUrl    String?                    // alamat gambar produk, boleh kosong
+  categoryId  Int                        // kolom penyimpan id kategori (kunci asing)
+  category    Category @relation(fields: [categoryId], references: [id])
+                                         // hubungan: categoryId di tabel ini menunjuk ke id di tabel Category
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt        // diperbarui otomatis tiap data diubah
+
+  @@index([categoryId])   // mempercepat pencarian produk berdasarkan kategori
+  @@map("products")
+}
