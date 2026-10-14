@@ -148,3 +148,126 @@ a:focus-visible {
   max-width: 55ch;
   margin-top: 1rem;
 } /* batasi lebar baris agar enak dibaca */
+
+/* ---------- Bakul: satu bagian per kategori ---------- */
+.bakul {
+  display: grid;
+  grid-template-columns: 240px 1fr; /* kolom kiri 240px, kolom kanan sisanya */
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto 3.5rem;
+  padding: 0 1.5rem;
+}
+
+/* Blok warna kategori; menempel di atas layar saat daftar produk di-scroll */
+.bakul-judul {
+  align-self: start;
+  position: sticky;
+  top: 1rem;
+  padding: 1.5rem;
+  border-radius: 28px;
+  background: var(--warna);
+  color: var(--warna-teks);
+}
+.bakul-judul h2 {
+  font-size: 2.2rem;
+}
+.bakul-judul p {
+  margin: 0.5rem 0 0;
+}
+
+.bakul-daftar {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------- Baris produk (seperti baris di nota) ---------- */
+.produk {
+  display: grid;
+  grid-template-columns: 88px 1fr auto; /* gambar | info | harga */
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 2px dotted rgba(36, 18, 77, 0.35); /* garis titik-titik nota */
+}
+
+.produk-gambar {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1; /* selalu persegi */
+  border-radius: 22px;
+  overflow: hidden;
+  background: var(--warna);
+  color: var(--warna-teks);
+}
+.produk-gambar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.produk-gambar span {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2rem;
+}
+
+.produk-info h3 {
+  font-size: 1.1rem;
+}
+.produk-info p {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+.produk-harga {
+  display: grid;
+  gap: 0.5rem;
+  justify-items: end;
+}
+.produk-harga strong {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+}
+
+.produk-harga button {
+  font: inherit; /* pakai huruf yang sama dengan halaman */
+  padding: 0.4rem 0.95rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+.produk-harga button:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--paper);
+}
+.produk-harga button:focus-visible {
+  outline: 3px solid var(--kobalt);
+  outline-offset: 3px;
+}
+.produk-harga button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ---------- Layar kecil (ponsel) ---------- */
+@media (max-width: 760px) {
+  .bakul {
+    grid-template-columns: 1fr;
+  } /* tumpuk: blok warna di atas, produk di bawah */
+  .bakul-judul {
+    position: static;
+  } /* matikan efek menempel */
+  .produk {
+    grid-template-columns: 72px 1fr;
+  }
+  .produk-harga {
+    grid-column: 1 / -1; /* harga dan tombol memakai satu baris penuh */
+    grid-template-columns: 1fr auto;
+    justify-items: start;
+    align-items: center;
+  }
+}
